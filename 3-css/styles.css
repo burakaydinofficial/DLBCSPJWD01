@@ -1,0 +1,16 @@
+/* page background */
+body { background-color: white; }
+
+/* paragraph text */
+p { text-align: left; color: black; }
+
+/* highlighted content box */
+div {
+  margin-left: 50px;
+  margin-top: 20px;
+  border: 2px solid black;
+  background-color: yellow;
+}
+
+/* section heading */
+h2 { color: blue; margin-left: 0; }
