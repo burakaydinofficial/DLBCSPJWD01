@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A-Nice-Restaurant - Fluid Layout</title>
+  <link rel="stylesheet" href="base.css">
+  <style>
+    /* FLUID LAYOUT: dimensions in percentages of the window.
+       The columns grow and shrink with the screen, so there is no
+       horizontal scrolling. The weakness: on a phone the two columns
+       become very narrow and the text gets cramped, because the
+       content itself keeps its natural size. */
+    .container    { width: 92%; }
+    .columns      { display: flow-root; }
+    .menu-col     { width: 65%; float: left; }
+    .specials-col { width: 32%; float: right; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>A-Nice-Restaurant</h1>
+      <p>Serving nice foods since 1998</p>
+    </div>
+  </header>
+
+  <nav class="site-nav">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Menu</a></li>
+      <li><a href="#">Specials</a></li>
+      <li><a href="#">Reservations</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="columns">
+        <section class="panel menu-col">
+          <h2>Menu</h2>
+          <div class="dish"><span class="name">Margherita Pizza</span><span class="price">#9</span></div>
+          <p class="desc">A nice pizza with tomato and basil</p>
+          <div class="dish"><span class="name">Tagliatelle al Ragu</span><span class="price">#13</span></div>
+          <p class="desc">A juicy dish with beef and pork</p>
+          <div class="dish"><span class="name">Risotto ai Funghi</span><span class="price">#14</span></div>
+          <p class="desc">Parmesan and mushroom</p>
+          <div class="dish"><span class="name">Saltimbocca alla Romana</span><span class="price">#17</span></div>
+          <p class="desc">An Italian dish I can think of</p>
+          <div class="dish"><span class="name">Tiramisu</span><span class="price">#7</span></div>
+          <p class="desc">Has a lot of coffee and sweat</p>
+        </section>
+        <aside class="panel specials-col">
+          <h2>Today's Specials</h2>
+          <div class="special"><span class="title">Truffle Tagliatelle</span> - #16<br>Fresh black truffle, Fridays only</div>
+          <div class="special"><span class="title">Seafood Linguine</span> - #18<br>Clams, prawns and mussels, weekends</div>
+          <div class="special"><span class="title">Aperitivo Hour</span><br>2-for-1 spritz, 17:00-19:00</div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>12 Via Roma, Lisbon - Open Tue-Sun 12:00-23:00 - <a href="tel:+351210000000">+351 21 000 0000</a></p>
+    </div>
+  </footer>
+</body>
+</html>

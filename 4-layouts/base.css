@@ -1,0 +1,64 @@
+/* base.css - shared restaurant styling (typography, colours, components).
+   Page LAYOUT (widths, columns, breakpoints) lives in each demo file's
+   <style> block, so the four demos differ only in their layout approach. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #33271e;
+  background: #fbf6ef;
+  line-height: 1.5;
+}
+
+.container { margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+.site-header {
+  background: #7b1e1e;
+  color: #fff5e9;
+  text-align: center;
+  padding: 26px 16px;
+}
+.site-header h1 { margin: 0; font-size: 30px; letter-spacing: 1px; }
+.site-header p  { margin: 6px 0 0; font-style: italic; color: #f0d9c2; }
+
+/* Navigation */
+.site-nav { background: #5a1616; }
+.site-nav ul {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.site-nav a {
+  display: block; color: #fff5e9; text-decoration: none;
+  padding: 12px 18px; font-size: 15px;
+}
+.site-nav a:hover { background: #7b1e1e; }
+
+/* Content panels */
+main { padding: 24px 0; }
+.panel {
+  background: #fff;
+  border: 1px solid #e2d6c6;
+  padding: 18px 20px;
+}
+.panel h2 {
+  margin-top: 0; color: #7b1e1e;
+  border-bottom: 2px solid #e2d6c6; padding-bottom: 8px;
+}
+
+.dish { display: flex; justify-content: space-between; padding: 8px 0 0; }
+.dish .name  { font-weight: bold; }
+.dish .price { color: #7b1e1e; font-weight: bold; }
+.desc { margin: 2px 0 10px; font-size: 13px; color: #6b5d4f; font-style: italic; }
+
+.special { margin-bottom: 12px; }
+.special .title { font-weight: bold; color: #7b1e1e; }
+
+/* Footer */
+.site-footer {
+  background: #33271e; color: #e9ddcd;
+  text-align: center; padding: 20px 16px; font-size: 14px;
+}
+.site-footer a { color: #f0d9c2; }

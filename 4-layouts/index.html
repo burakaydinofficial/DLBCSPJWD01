@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A-Nice-Restaurant - Layout Demos</title>
+  <link rel="stylesheet" href="base.css">
+  <style>
+    .container { width: 100%; max-width: 720px; }
+    .demo { display: block; padding: 14px 16px; margin: 10px 0;
+            background: #fff; border: 1px solid #e2d6c6;
+            text-decoration: none; color: #33271e; }
+    .demo b { color: #7b1e1e; }
+    .demo span { display: block; font-size: 13px; color: #6b5d4f; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>A-Nice-Restaurant</h1>
+      <p>Four layout approaches, one restaurant page</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <a class="demo" href="fixed.html"><b>Fixed</b><span>Pixel widths, no adaptation. Resize the window to see overflow.</span></a>
+      <a class="demo" href="fluid.html"><b>Fluid</b><span>Percentage widths that scale with the window.</span></a>
+      <a class="demo" href="adaptive.html"><b>Adaptive</b><span>Several fixed layouts that jump at breakpoints.</span></a>
+      <a class="demo" href="responsive.html"><b>Responsive</b><span>Fluid scaling plus a breakpoint that reflows the columns.</span></a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Open each demo and resize the browser to compare behaviour.</p>
+    </div>
+  </footer>
+</body>
+</html>
