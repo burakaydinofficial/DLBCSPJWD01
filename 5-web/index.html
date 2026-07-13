@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact List</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
+    h1 { font-size: 22px; }
+    table { border-collapse: collapse; width: 100%; max-width: 640px; margin: 12px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; }
+    th { background: #f2f2f2; }
+    form, .remove-box, .toolbar { max-width: 640px; margin: 12px 0; }
+    label { display: inline-block; width: 130px; }
+    input { padding: 5px; width: 240px; }
+    button { padding: 5px 12px; cursor: pointer; }
+    .error { color: #b00020; min-height: 18px; margin: 6px 0; }
+    .row { margin: 6px 0; }
+    .toolbar button { margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Contact List</h1>
+
+  <!-- The table is filled in by JavaScript, so it starts with only a header. -->
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Phone Number</th><th>Action</th></tr>
+    </thead>
+    <tbody id="contact-rows"></tbody>
+  </table>
+
+  <!-- Import / export the whole list as a JSON file. -->
+  <div class="toolbar">
+    <button id="export-btn" type="button">Export JSON</button>
+    <button id="import-btn" type="button">Import JSON</button>
+    <input id="import-input" type="file" accept="application/json,.json" hidden>
+  </div>
+
+  <h2>Add a contact</h2>
+  <form id="add-form" novalidate>
+    <div class="row"><label for="name">Name</label><input id="name" type="text"></div>
+    <div class="row"><label for="email">Email</label><input id="email" type="text"></div>
+    <div class="row"><label for="phone">Phone Number</label><input id="phone" type="text"></div>
+    <p class="error" id="form-error"></p>
+    <button type="submit">Add contact</button>
+  </form>
+
+  <h2>Remove a contact</h2>
+  <div class="remove-box">
+    <label for="remove-name">Name to remove</label>
+    <input id="remove-name" type="text">
+    <button id="remove-btn" type="button">Remove</button>
+  </div>
+
+  <script>
+    // 1. JSON DATA: the contact list is stored as a JSON string and then
+    //    parsed into a JavaScript array we can work with.
+    const initialJson = `[
+      { "name": "Ada Lovelace", "email": "ada@example.com",   "phone": "+1 202 555 0142" },
+      { "name": "Alan Turing",  "email": "alan@example.com",  "phone": "+44 20 7946 0958" },
+      { "name": "Grace Hopper", "email": "grace@example.com", "phone": "+1 202 555 0175" }
+    ]`;
+    let contacts = JSON.parse(initialJson);
+
+    const tbody       = document.getElementById("contact-rows");
+    const form        = document.getElementById("add-form");
+    const errorBox    = document.getElementById("form-error");
+    const removeInput = document.getElementById("remove-name");
+
+    // 2. DISPLAY: rebuild the table body from the current array.
+    function renderTable() {
+      tbody.innerHTML = ""; // clear the old rows first
+      contacts.forEach(function (contact) {
+        const row = document.createElement("tr");
+        ["name", "email", "phone"].forEach(function (key) {
+          const cell = document.createElement("td");
+          cell.textContent = contact[key]; // textContent, so a name cannot inject HTML
+          row.appendChild(cell);
+        });
+        const actionCell = document.createElement("td");
+        const btn = document.createElement("button");
+        btn.textContent = "Remove";
+        btn.addEventListener("click", function () { removeContact(contact.name); });
+        actionCell.appendChild(btn);
+        row.appendChild(actionCell);
+        tbody.appendChild(row);
+      });
+    }
+
+    // 5. VALIDATION: a simple check that an email looks like text@text.text
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // 3. ADD: validate the form, then push a new contact and redraw.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // stop the browser from reloading the page
+      const name  = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      const errors = [];
+      if (!name)  errors.push("Name is required.");
+      if (!email) errors.push("Email is required.");
+      else if (!isValidEmail(email)) errors.push("Email format is not valid.");
+      if (!phone) errors.push("Phone number is required.");
+
+      if (errors.length > 0) {
+        errorBox.textContent = errors.join(" "); // show the problems, add nothing
+        return;
+      }
+
+      errorBox.textContent = "";
+      contacts.push({ name: name, email: email, phone: phone });
+      renderTable();
+      form.reset();
+    });
+
+    // 4. REMOVE: keep every contact whose name does not match the one given.
+    function removeContact(name) {
+      contacts = contacts.filter(function (contact) {
+        return contact.name !== name;
+      });
+      renderTable();
+    }
+    document.getElementById("remove-btn").addEventListener("click", function () {
+      const name = removeInput.value.trim();
+      if (name) { removeContact(name); removeInput.value = ""; }
+    });
+
+    // EXPORT: turn the current list into JSON text and download it as a file.
+    document.getElementById("export-btn").addEventListener("click", function () {
+      const json = JSON.stringify(contacts, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url  = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "contacts.json";
+      link.click();
+      URL.revokeObjectURL(url); // release the temporary URL
+    });
+
+    // The styled Import button just opens the hidden file input.
+    document.getElementById("import-btn").addEventListener("click", function () {
+      document.getElementById("import-input").click();
+    });
+
+    // IMPORT: read a JSON file the user picks, parse it, and replace the list.
+    document.getElementById("import-input").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function () {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!Array.isArray(data)) throw new Error("not an array");
+          contacts = data;
+          errorBox.textContent = "";
+          renderTable();
+        } catch (err) {
+          errorBox.textContent = "Import failed: the file is not valid contact JSON.";
+        }
+        event.target.value = ""; // let the same file be chosen again later
+      };
+      reader.readAsText(file);
+    });
+
+    renderTable(); // first draw when the page loads
+  </script>
+</body>
+</html>
